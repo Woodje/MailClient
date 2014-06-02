@@ -38,6 +38,7 @@
             this.webBrowserView = new System.Windows.Forms.WebBrowser();
             this.listBoxMails = new System.Windows.Forms.ListBox();
             this.timerWaiting = new System.Windows.Forms.Timer(this.components);
+            this.buttonNewMail = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBoxMail
@@ -111,6 +112,7 @@
             this.webBrowserView.Name = "webBrowserView";
             this.webBrowserView.Size = new System.Drawing.Size(549, 499);
             this.webBrowserView.TabIndex = 9;
+            this.webBrowserView.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowserView_DocumentCompleted);
             // 
             // listBoxMails
             // 
@@ -119,9 +121,9 @@
             this.listBoxMails.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxMails.FormattingEnabled = true;
             this.listBoxMails.ItemHeight = 16;
-            this.listBoxMails.Location = new System.Drawing.Point(16, 68);
+            this.listBoxMails.Location = new System.Drawing.Point(16, 100);
             this.listBoxMails.Name = "listBoxMails";
-            this.listBoxMails.Size = new System.Drawing.Size(341, 468);
+            this.listBoxMails.Size = new System.Drawing.Size(341, 436);
             this.listBoxMails.TabIndex = 10;
             this.listBoxMails.SelectedIndexChanged += new System.EventHandler(this.listBoxMails_SelectedIndexChanged);
             // 
@@ -130,12 +132,24 @@
             this.timerWaiting.Enabled = true;
             this.timerWaiting.Tick += new System.EventHandler(this.timerWaiting_Tick);
             // 
+            // buttonNewMail
+            // 
+            this.buttonNewMail.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonNewMail.Location = new System.Drawing.Point(16, 65);
+            this.buttonNewMail.Name = "buttonNewMail";
+            this.buttonNewMail.Size = new System.Drawing.Size(89, 29);
+            this.buttonNewMail.TabIndex = 11;
+            this.buttonNewMail.Text = "New Mail";
+            this.buttonNewMail.UseVisualStyleBackColor = true;
+            this.buttonNewMail.Click += new System.EventHandler(this.buttonNewMail_Click);
+            // 
             // MailClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(924, 579);
+            this.Controls.Add(this.buttonNewMail);
             this.Controls.Add(this.listBoxMails);
             this.Controls.Add(this.webBrowserView);
             this.Controls.Add(this.progressBarStatus);
@@ -164,6 +178,7 @@
         private System.Windows.Forms.WebBrowser webBrowserView;
         private System.Windows.Forms.ListBox listBoxMails;
         private System.Windows.Forms.Timer timerWaiting;
+        private System.Windows.Forms.Button buttonNewMail;
     }
 }
 

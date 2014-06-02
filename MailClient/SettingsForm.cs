@@ -12,8 +12,8 @@ namespace MailClient
 {
     public partial class SettingsForm : Form
     {
-        // Declaring the variable for the database.
-        private Database dbMailClient;
+        // Declaring the variable for the settingsDatabase.
+        private SettingsDatabase settingsDatabase;
 
         // Create a boolean variable to control when the settings is accepted.
         private bool settingsAccepted = false;
@@ -34,17 +34,21 @@ namespace MailClient
                 Close();
 
             // Instantiate the database.
-            dbMailClient = new Database();
+            settingsDatabase = new SettingsDatabase();
 
-            foreach (Database.UserInfo value in dbMailClient.readUserInfo())
+            // Go through all the retrieved settings from the database.
+            foreach (SettingsDatabase.UserSettings value in settingsDatabase.ReadUserSettings())
             {
                 // Find the record which matches the usermail and password.
                 if (Application.OpenForms["MailClientForm"].Controls["textBoxMail"].Text == value.userMail && Application.OpenForms["MailClientForm"].Controls["textBoxPassword"].Text == value.password)
                 {
                     // Write the retrieved values to the textboxes.
-                    textBoxServer.Text = value.server;
-                    textBoxPort.Text = value.port.ToString();
-                    textBoxSSL.Text = value.ssl;
+                    textBoxReceiveServer.Text = value.receiveServer;
+                    textBoxReceivePort.Text = value.receivePort.ToString();
+                    textBoxReceiveSSL.Text = value.receiveSSL;
+                    textBoxSendServer.Text = value.sendServer;
+                    textBoxSendPort.Text = value.sendPort.ToString();
+                    textBoxSendSSL.Text = value.sendSSL;
 
                     // Break out of the loop because a match is found.
                     break;
@@ -54,8 +58,8 @@ namespace MailClient
 
         private void SettingsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // Change the label on the other form to show that we are ready to connect.
-            ComponentChanges.changeLabelForeColor((Label)Application.OpenForms["MailClientForm"].Controls["labelStatus"], Color.Blue);
+            // Change the program status to state that we are ready to connect again.
+            MailClientForm.SetProgramStatus(MailClientForm.ProgramStatus.SettingAccepted);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -65,32 +69,33 @@ namespace MailClient
                 Close();
 
             // Check if text is typed into both textboxes.
-            if (textBoxServer.Text != "" && textBoxPort.Text != "" && textBoxSSL.Text != "")
+            if (textBoxReceiveServer.Text != "" && textBoxReceivePort.Text != "" && textBoxReceiveSSL.Text != "" && textBoxSendServer.Text != "" && textBoxSendPort.Text != "" && textBoxSendSSL.Text != "")
             {
                 // Declare a variable for validation use.
                 int i;
 
                 // Validate if value is 'NULL'.
-                if (textBoxServer.Text == "NULL")
+                if (textBoxReceiveServer.Text == "NULL" || textBoxSendServer.Text == "NULL")
                 {
                     MessageBox.Show("(Server:) may not be 'NULL'");
                 }
                 // Validate if the typed value is an integer.
-                else if (!int.TryParse(textBoxPort.Text, out i))
+                else if (!int.TryParse(textBoxReceivePort.Text, out i) || !int.TryParse(textBoxSendPort.Text, out i))
                 {
                     MessageBox.Show("(Port:) needs to be a number!");
                 }
                 // Validate if the typed value is of true or false.
-                else if (!(textBoxSSL.Text.ToUpper() == "FALSE" || textBoxSSL.Text.ToUpper() == "TRUE"))
+                else if (!(textBoxReceiveSSL.Text.ToUpper() == "FALSE" || textBoxReceiveSSL.Text.ToUpper() == "TRUE") || !(textBoxSendSSL.Text.ToUpper() == "FALSE" || textBoxSendSSL.Text.ToUpper() == "TRUE"))
                 {
                     MessageBox.Show("(SSL:) needs to be either 'true' or 'false'");
                 }
                 else
                 {
                     // Update the settings for the current usermail and password.
-                    dbMailClient.UpdateSettings(Application.OpenForms["MailClientForm"].Controls["textBoxMail"].Text,
+                    settingsDatabase.UpdateSettings(Application.OpenForms["MailClientForm"].Controls["textBoxMail"].Text,
                                                 Application.OpenForms["MailClientForm"].Controls["textBoxPassword"].Text,
-                                                textBoxServer.Text, int.Parse(textBoxPort.Text), bool.Parse(textBoxSSL.Text));
+                                                textBoxReceiveServer.Text, int.Parse(textBoxReceivePort.Text), bool.Parse(textBoxReceiveSSL.Text),
+                                                textBoxSendServer.Text, int.Parse(textBoxSendPort.Text), bool.Parse(textBoxSendSSL.Text));
 
                     // Announce that the settings is accepted.
                     settingsAccepted = true;

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace MailClient
 {
-    public class Database
-    {   
+    class LoginDatabase
+    {
         // Declaring the variables needed the use of SQLite.
         private SQLiteConnection dbConnection;
         private SQLiteCommand command;
@@ -19,14 +19,13 @@ namespace MailClient
         private string  dbName = "MailClient.db",
                         dbPassword = "MailClientPassword";
 
-        // Create a struct that can hold usermails, passwords, server, port and ssl.
-        public struct UserInfo 
+        // Create a struct that can hold usermails, passwords, and autologin.
+        public struct UserInfo
         {
-           public string userMail, password, server, ssl, autoLogin;
-           public int port;
+            public string userMail, password, autoLogin;
         };
-
-        public Database()
+      
+        public LoginDatabase()
         {
             // Initialize the database from the constructor.
             InitDatabase();
@@ -49,8 +48,15 @@ namespace MailClient
                 // Open the newly created database.
                 dbConnection.Open();
 
-                // Create a table called "mailaddresses" with five coulumns called "address", "password", "server", "port" and "ssl".
-                command.CommandText = "CREATE TABLE mailaddresses (address VARCHAR(50), password VARCHAR(25), server VARCHAR(50), port INT, ssl VARCHAR(5), autologin VARCHAR(5));";
+                // Create a table called "mailaddresses" with nine columns.
+                command.CommandText =   "CREATE TABLE mailaddresses (address TEXT, password TEXT, receiveserver TEXT, receiveport INT, receivessl TEXT,"
+                                      + "sendserver TEXT, sendport INT, sendssl TEXT, autologin TEXT);";
+
+                // Execute the newly created command.
+                command.ExecuteNonQuery();
+
+                // Create a table called "mails" with two columns called "address" and "rawmessage".
+                command.CommandText = "CREATE TABLE mails (address TEXT, rawmessage TEXT);";
 
                 // Execute the newly created command.
                 command.ExecuteNonQuery();
@@ -85,7 +91,7 @@ namespace MailClient
         }
 
         public void CreateUserMail(string userMail, string password, bool autoLogin)
-        {   
+        {
             // Check if an autologin is checked.
             if (autoLogin)
             {
@@ -103,7 +109,8 @@ namespace MailClient
             command.ExecuteNonQuery();
 
             // Insert a mailaddress and password into the table called "mailaddresses".
-            command.CommandText = "INSERT INTO mailaddresses VALUES ('" + userMail + "', '" + password + "', 'NULL', 0, 'false', '" + autoLogin.ToString().ToLower() + "');";
+            command.CommandText =   "INSERT INTO mailaddresses VALUES ('" + userMail + "', '" + password + "', 'NULL', 0, 'false', '"
+                                  + "NULL', 0, 'false', '" + autoLogin.ToString().ToLower() + "');";
 
             // Execute the newly created command.
             command.ExecuteNonQuery();
@@ -131,26 +138,10 @@ namespace MailClient
             dbConnection.Close();
         }
 
-        public void UpdateSettings(string userMail, string password, string server, int port, bool ssl)
+        public List<UserInfo> ReadUserInfo()
         {
-            // Open the database.
-            dbConnection.Open();
-
-            // Insert a mailaddress and password into the table called "mailaddresses".
-            command.CommandText =   "UPDATE mailaddresses SET server='" + server + "', port=" + port + ", ssl='" + ssl + "'"
-                                  + "WHERE address='" + userMail + "' AND password='" + password + "';";
-
-            // Execute the newly created command.
-            command.ExecuteNonQuery();
-
-            // Close the database again. 
-            dbConnection.Close();
-        }
-
-        public List<UserInfo> readUserInfo()
-        {
-            // Create a list for the usermails.
-            List<UserInfo> userMailsAndPasswords = new List<UserInfo>();
+            // Create a list for the user info.
+            List<UserInfo> listUserInfo = new List<UserInfo>();
 
             // Open the database.
             dbConnection.Open();
@@ -163,12 +154,12 @@ namespace MailClient
 
             // Read the retrieved query, and write the results to the newly created list.
             while (query.Read())
-                userMailsAndPasswords.Add(new UserInfo {    userMail = query["address"].ToString(),
-                                                            password = query["password"].ToString(),
-                                                            server = query["server"].ToString(),
-                                                            port =  (int)query["port"],
-                                                            ssl  = query["ssl"].ToString(),
-                                                            autoLogin = query["autologin"].ToString()});
+                listUserInfo.Add(new UserInfo
+                {
+                    userMail = query["address"].ToString(),
+                    password = query["password"].ToString(),
+                    autoLogin = query["autologin"].ToString()
+                });
 
             // Close the query-reader again.
             query.Close();
@@ -176,7 +167,8 @@ namespace MailClient
             // Close the database again. 
             dbConnection.Close();
 
-            return userMailsAndPasswords;
+            // Return the created list.
+            return listUserInfo;
         }
     }
 }

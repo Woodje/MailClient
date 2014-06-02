@@ -65,7 +65,7 @@
   <ItemGroup>
     <Compile Include="ComponentChanges.cs" />
     <Compile Include="ConnectToServer.cs" />
-    <Compile Include="Database.cs" />
+    <Compile Include="LoginDatabase.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,8 +78,16 @@
     <Compile Include="MailClientForm.Designer.cs">
       <DependentUpon>MailClientForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MailDatabase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SendMailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SendMailForm.Designer.cs">
+      <DependentUpon>SendMailForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsDatabase.cs" />
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,6 +109,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SendMailForm.resx">
+      <DependentUpon>SendMailForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>

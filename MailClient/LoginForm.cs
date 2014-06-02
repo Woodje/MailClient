@@ -13,8 +13,8 @@ namespace MailClient
 {
     public partial class LoginForm : Form
     {
-        // Declaring the variable for the database.
-        private Database dbMailClient;
+        // Declaring the variable for the loginDatabase.
+        private LoginDatabase loginDatabase;
 
         // Create a boolean variable to control when a login is accepted.
         private bool loginAccepted = false;
@@ -31,10 +31,10 @@ namespace MailClient
         private void CheckAutoLogin()
         {
             // Instantiate the database.
-            dbMailClient = new Database();
+            loginDatabase = new LoginDatabase();
 
             // Go through all the user records in the database.
-            foreach (Database.UserInfo value in dbMailClient.readUserInfo())
+            foreach (LoginDatabase.UserInfo value in loginDatabase.ReadUserInfo())
             {
                 // Check if a record contains an autologin set to true.
                 if (value.autoLogin == "true")
@@ -60,23 +60,23 @@ namespace MailClient
             if (textBoxMailAddress.Text != "" && textBoxPassword.Text != "")
             {
                 // Go through all the user records in the database.
-                foreach (Database.UserInfo value in dbMailClient.readUserInfo())
+                foreach (LoginDatabase.UserInfo value in loginDatabase.ReadUserInfo())
                 {
                     // Check if the entered information matches a record in the database.
                     if (textBoxMailAddress.Text.ToUpper() == value.userMail.ToUpper() && textBoxPassword.Text == value.password)
                     {
                         // Transfer the two textboxes values to the other form.
-                        ComponentChanges.changeTextBoxText((TextBox)Application.OpenForms["MailClientForm"].Controls["textBoxMail"], textBoxMailAddress.Text);
-                        ComponentChanges.changeTextBoxText((TextBox)Application.OpenForms["MailClientForm"].Controls["textBoxPassword"], textBoxPassword.Text);
+                        ComponentChanges.ReplaceTextBoxText((TextBox)Application.OpenForms["MailClientForm"].Controls["textBoxMail"], textBoxMailAddress.Text);
+                        ComponentChanges.ReplaceTextBoxText((TextBox)Application.OpenForms["MailClientForm"].Controls["textBoxPassword"], textBoxPassword.Text);
 
                         // Update the autologin in the database for this usermail and password.
-                        dbMailClient.UpdateAutoLogin(textBoxMailAddress.Text, textBoxPassword.Text, checkBoxSaveCredentials.Checked);
+                        loginDatabase.UpdateAutoLogin(textBoxMailAddress.Text, textBoxPassword.Text, checkBoxSaveCredentials.Checked);
 
                         // Announce that a login is accepted.
                         loginAccepted = true;
-                        
-                        // Change the label on the other form to show that we are ready to connect.
-                        ComponentChanges.changeLabelForeColor((Label)Application.OpenForms["MailClientForm"].Controls["labelStatus"], Color.Blue);
+
+                        // Change the programs status to state that we are ready to connect.
+                        MailClientForm.SetProgramStatus(MailClientForm.ProgramStatus.LoginAccepted);
 
                         // Break out of the loop because a match is found.
                         break;
@@ -87,17 +87,17 @@ namespace MailClient
                 if (!loginAccepted)
                 {
                     // Create a new user record in the database.
-                    dbMailClient.CreateUserMail(textBoxMailAddress.Text, textBoxPassword.Text, checkBoxSaveCredentials.Checked);
+                    loginDatabase.CreateUserMail(textBoxMailAddress.Text, textBoxPassword.Text, checkBoxSaveCredentials.Checked);
 
                     // Transfer the two textboxes values to the other form.
-                    ComponentChanges.changeTextBoxText((TextBox)Application.OpenForms["MailClientForm"].Controls["textBoxMail"], textBoxMailAddress.Text);
-                    ComponentChanges.changeTextBoxText((TextBox)Application.OpenForms["MailClientForm"].Controls["textBoxPassword"], textBoxPassword.Text);
+                    ComponentChanges.ReplaceTextBoxText((TextBox)Application.OpenForms["MailClientForm"].Controls["textBoxMail"], textBoxMailAddress.Text);
+                    ComponentChanges.ReplaceTextBoxText((TextBox)Application.OpenForms["MailClientForm"].Controls["textBoxPassword"], textBoxPassword.Text);
 
                     // Announce that a login is accepted.
                     loginAccepted = true;
 
-                    // Change the label on the other form to show that we are ready to connect.
-                    ComponentChanges.changeLabelForeColor((Label)Application.OpenForms["MailClientForm"].Controls["labelStatus"], Color.Blue);
+                    // Change the programs status to state that we are ready to connect.
+                    MailClientForm.SetProgramStatus(MailClientForm.ProgramStatus.LoginAccepted);
                 }
             }
             else
@@ -114,7 +114,7 @@ namespace MailClient
             // Check if the other form is open and close it if this form is closed.
             // Also check if a login has been accepted.
             if (Application.OpenForms["MailClientForm"] != null && !loginAccepted)
-                ComponentChanges.closeForm((Form)Application.OpenForms["MailClientForm"]);
+                ComponentChanges.CloseForm((Form)Application.OpenForms["MailClientForm"]);
         }
     }   
 }
