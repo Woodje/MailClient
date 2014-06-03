@@ -36,6 +36,7 @@
             this.textBoxSubject = new System.Windows.Forms.TextBox();
             this.textBoxMessage = new System.Windows.Forms.TextBox();
             this.buttonSend = new System.Windows.Forms.Button();
+            this.checkBoxEncrypted = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // labelFrom
@@ -106,17 +107,29 @@
             this.buttonSend.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonSend.Location = new System.Drawing.Point(401, 11);
             this.buttonSend.Name = "buttonSend";
-            this.buttonSend.Size = new System.Drawing.Size(93, 79);
+            this.buttonSend.Size = new System.Drawing.Size(93, 51);
             this.buttonSend.TabIndex = 9;
             this.buttonSend.Text = "SEND";
             this.buttonSend.UseVisualStyleBackColor = true;
             this.buttonSend.Click += new System.EventHandler(this.buttonSend_Click);
+            // 
+            // checkBoxEncrypted
+            // 
+            this.checkBoxEncrypted.AutoSize = true;
+            this.checkBoxEncrypted.Location = new System.Drawing.Point(402, 66);
+            this.checkBoxEncrypted.Name = "checkBoxEncrypted";
+            this.checkBoxEncrypted.Size = new System.Drawing.Size(94, 21);
+            this.checkBoxEncrypted.TabIndex = 10;
+            this.checkBoxEncrypted.Text = "Encrypted";
+            this.checkBoxEncrypted.UseVisualStyleBackColor = true;
+            this.checkBoxEncrypted.CheckedChanged += new System.EventHandler(this.checkBoxEncrypted_CheckedChanged);
             // 
             // SendMailForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(506, 549);
+            this.Controls.Add(this.checkBoxEncrypted);
             this.Controls.Add(this.buttonSend);
             this.Controls.Add(this.textBoxMessage);
             this.Controls.Add(this.labelSubject);
@@ -145,5 +158,6 @@
         private System.Windows.Forms.TextBox textBoxSubject;
         private System.Windows.Forms.TextBox textBoxMessage;
         private System.Windows.Forms.Button buttonSend;
+        private System.Windows.Forms.CheckBox checkBoxEncrypted;
     }
 }

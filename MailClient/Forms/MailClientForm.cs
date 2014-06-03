@@ -178,6 +178,12 @@ namespace MailClient
             // Check if the programs status is at timeout.
             else if (programStatus == ProgramStatus.TimeOut)
             {
+                // Declare and initialize a variable for the amount of mails in the database.
+                int dbMailCount = mailDatabase.ReadMailCount(textBoxMail.Text);
+
+                // Retrieve the datetime for the latest mail.
+                newestMailDateTime = mailDatabase.ReadMail(textBoxMail.Text, dbMailCount).Headers.DateSent;
+
                 // Check if any new mails is present on the server.
                 connectToServer.RefreshConnection(newestMailDateTime);
 
@@ -205,7 +211,7 @@ namespace MailClient
 
             // Check the value of the timeout counter while also incrementing it with one for every tick.
             // Also make sure that the programs status is in connected state.
-            if (timeOutCounter++ >= 350 && programStatus == ProgramStatus.Connected)
+            if (timeOutCounter++ >= 250 && programStatus == ProgramStatus.Connected)
                 // Change the programs status to state that the connection has timed out.
                 MailClientForm.SetProgramStatus(MailClientForm.ProgramStatus.TimeOut);
         }

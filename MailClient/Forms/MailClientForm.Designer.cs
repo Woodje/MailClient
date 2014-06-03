@@ -97,9 +97,9 @@
             // progressBarStatus
             // 
             this.progressBarStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.progressBarStatus.Location = new System.Drawing.Point(12, 544);
+            this.progressBarStatus.Location = new System.Drawing.Point(12, 606);
             this.progressBarStatus.Name = "progressBarStatus";
-            this.progressBarStatus.Size = new System.Drawing.Size(345, 23);
+            this.progressBarStatus.Size = new System.Drawing.Size(402, 23);
             this.progressBarStatus.TabIndex = 8;
             // 
             // webBrowserView
@@ -107,10 +107,10 @@
             this.webBrowserView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.webBrowserView.Location = new System.Drawing.Point(363, 68);
+            this.webBrowserView.Location = new System.Drawing.Point(424, 68);
             this.webBrowserView.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowserView.Name = "webBrowserView";
-            this.webBrowserView.Size = new System.Drawing.Size(549, 499);
+            this.webBrowserView.Size = new System.Drawing.Size(929, 561);
             this.webBrowserView.TabIndex = 9;
             this.webBrowserView.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowserView_DocumentCompleted);
             // 
@@ -118,12 +118,12 @@
             // 
             this.listBoxMails.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.listBoxMails.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxMails.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxMails.FormattingEnabled = true;
-            this.listBoxMails.ItemHeight = 16;
+            this.listBoxMails.ItemHeight = 18;
             this.listBoxMails.Location = new System.Drawing.Point(16, 100);
             this.listBoxMails.Name = "listBoxMails";
-            this.listBoxMails.Size = new System.Drawing.Size(341, 436);
+            this.listBoxMails.Size = new System.Drawing.Size(398, 472);
             this.listBoxMails.TabIndex = 10;
             this.listBoxMails.SelectedIndexChanged += new System.EventHandler(this.listBoxMails_SelectedIndexChanged);
             // 
@@ -148,7 +148,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(924, 579);
+            this.ClientSize = new System.Drawing.Size(1365, 641);
             this.Controls.Add(this.buttonNewMail);
             this.Controls.Add(this.listBoxMails);
             this.Controls.Add(this.webBrowserView);

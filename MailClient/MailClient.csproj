@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EncryptionDecryption.cs" />
     <Compile Include="Forms\ComponentChanges.cs" />
     <Compile Include="ConnectToServer.cs" />
     <Compile Include="Database\LoginDatabase.cs" />

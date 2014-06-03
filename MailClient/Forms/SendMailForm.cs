@@ -51,5 +51,27 @@ namespace MailClient
             if (mailMessageAccepted)
                 Close();
         }
+
+        private void checkBoxEncrypted_CheckedChanged(object sender, EventArgs e)
+        {
+            // Declare and instantiate the encryptiondecryption.
+            EncryptionDecryption stringEncrypterDecrypter = new EncryptionDecryption();
+            
+            // Check if the checkbox is checked.
+            if (checkBoxEncrypted.Checked)
+            {
+                //// Generate a new key for encoding.
+                byte[] key = stringEncrypterDecrypter.Key();
+
+                // Encrypt the message.
+                textBoxMessage.Text = stringEncrypterDecrypter.EncryptString(textBoxMessage.Text, key);
+
+                // Put the key into the subject textbox.
+                textBoxSubject.Text = Convert.ToBase64String(key);
+            }
+            else
+                // Decrypt the message.
+                textBoxMessage.Text = stringEncrypterDecrypter.DecryptString(textBoxMessage.Text, Convert.FromBase64String(textBoxSubject.Text));
+        }
     }
 }
