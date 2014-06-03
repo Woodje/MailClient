@@ -63,41 +63,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComponentChanges.cs" />
+    <Compile Include="Forms\ComponentChanges.cs" />
     <Compile Include="ConnectToServer.cs" />
-    <Compile Include="LoginDatabase.cs" />
-    <Compile Include="LoginForm.cs">
+    <Compile Include="Database\LoginDatabase.cs" />
+    <Compile Include="Forms\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForm.Designer.cs">
+    <Compile Include="Forms\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MailClientForm.cs">
+    <Compile Include="Forms\MailClientForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MailClientForm.Designer.cs">
+    <Compile Include="Forms\MailClientForm.Designer.cs">
       <DependentUpon>MailClientForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MailDatabase.cs" />
+    <Compile Include="Database\MailDatabase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SendMailForm.cs">
+    <Compile Include="Forms\SendMailForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SendMailForm.Designer.cs">
+    <Compile Include="Forms\SendMailForm.Designer.cs">
       <DependentUpon>SendMailForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SettingsDatabase.cs" />
-    <Compile Include="SettingsForm.cs">
+    <Compile Include="Database\SettingsDatabase.cs" />
+    <Compile Include="Forms\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsForm.Designer.cs">
+    <Compile Include="Forms\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="LoginForm.resx">
+    <EmbeddedResource Include="Forms\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MailClientForm.resx">
+    <EmbeddedResource Include="Forms\MailClientForm.resx">
       <DependentUpon>MailClientForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -109,10 +109,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="SendMailForm.resx">
+    <EmbeddedResource Include="Forms\SendMailForm.resx">
       <DependentUpon>SendMailForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsForm.resx">
+    <EmbeddedResource Include="Forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />

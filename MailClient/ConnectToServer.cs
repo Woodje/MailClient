@@ -187,7 +187,7 @@ namespace MailClient
                 // Go through all of the mails on the mail server.
                 for (int i = mailCount; i >= 1; i--)
                     // Check if the current mail is newer than the latest recieved mail.
-                    if (Convert.ToDateTime(client.GetMessageHeaders(i).Date).CompareTo(newestMailDateTime) == 1)
+                    if (client.GetMessageHeaders(i).DateSent.CompareTo(newestMailDateTime) == 1)
                         // For every new mail on the server, increment our variable.
                         newMailCount++;
                     else
@@ -199,14 +199,18 @@ namespace MailClient
                     // Go through only the new mails.
                     for (int i = mailCount - newMailCount; i <= mailCount; i++)
                     {
-                        // Initialize the mailmessage variable with a mail from the server.
-                        mailMessage = client.GetMessage(i);
+                        // Check if the is a spam.
+                        if (Spamfilter(client.GetMessageHeaders(i)))
+                        {
+                            // Initialize the mailmessage variable with a mail from the server.
+                            mailMessage = client.GetMessage(i);
 
-                        // Add the rawmessage to the database in a string format from bytes.
-                        mailDatabase.InsertMail(userMail, Convert.ToBase64String(mailMessage.RawMessage));
+                            // Add the rawmessage to the database in a string format from bytes.
+                            mailDatabase.InsertMail(userMail, Convert.ToBase64String(mailMessage.RawMessage));
 
-                        // Add the "From"-header to the listbox as a representation of the mail.
-                        ComponentChanges.AddItemToListBox(listBoxMails, mailMessage.Headers.From.Address);
+                            // Add the "From"-header to the listbox as a representation of the mail.
+                            ComponentChanges.AddItemToListBox(listBoxMails, mailMessage.Headers.From.Address);
+                        }
                     }
             }
             catch (Exception e)
@@ -242,8 +246,8 @@ namespace MailClient
                 // Go through all of the mails on the mail server.
                 for (int i = 1; i <= mailCount; i++)
                 {
-                    // Check if the message contains a messageid, if it doesn't its most likely a spam mail and we are ignoring it.
-                    if (client.GetMessageHeaders(i).MessageId != null)
+                    // Check if the is a spam.
+                    if (Spamfilter(client.GetMessageHeaders(i)))
                     {
                         // Initialize the mailmessage variable with a mail from the server.
                         mailMessage = client.GetMessage(i);
@@ -341,6 +345,16 @@ namespace MailClient
                 // Announce through the status progressbar that we are done with trying to establish the connection.
                 ComponentChanges.ReplaceProgressBarValue(statusProgressBar, 100);
             }
+        }
+
+        private bool Spamfilter(OpenPop.Mime.Header.MessageHeader mailMessageHeader)
+        {
+            // Check if the messageheader contains a messageid, if it doesn't its most likely a spam mail and we are ignoring it.
+            if (mailMessageHeader.MessageId != null)
+                return true;
+
+            // Return false because a true is not returned above.
+            return false;
         }
     }
 }

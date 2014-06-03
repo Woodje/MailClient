@@ -130,8 +130,10 @@ namespace MailClient
 
             // Check if any mails was found in the database.
             if (dbMailCount > 0)
+            {
                 // Retrieve the datetime for the latest mail.
-                newestMailDateTime = Convert.ToDateTime(mailDatabase.ReadMail(textBoxMail.Text, dbMailCount).Headers.Date);
+                newestMailDateTime = mailDatabase.ReadMail(textBoxMail.Text, dbMailCount).Headers.DateSent;
+            }
             else
                 // Retrieve all the mails from the server if nothing is in the database.
                 connectToServer.RetrieveAllMailsFromServer(listBoxMails, mailDatabase);
@@ -210,6 +212,10 @@ namespace MailClient
 
         private void listBoxMails_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Check if the value should be ignored, in this case if it is below zero.
+            if (listBoxMails.SelectedIndex < 0)
+                return;
+
             // Retrieve the selected mail from the database.
             mailMessage = mailDatabase.ReadMail(textBoxMail.Text, listBoxMails.Items.Count - listBoxMails.SelectedIndex);
 
