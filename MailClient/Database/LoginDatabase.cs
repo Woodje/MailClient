@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MailClient
 {
@@ -12,8 +8,8 @@ namespace MailClient
     {
         // Declaring the variables needed the use of SQLite.
         private SQLiteConnection dbConnection;
-        private SQLiteCommand command;
-        private SQLiteDataReader query;
+        private SQLiteCommand dbCommand;
+        private SQLiteDataReader dbQuery;
 
         // Declaring and initializing the strings needed for the name of the database and its password.
         private string  dbName = "MailClient.db",
@@ -37,7 +33,7 @@ namespace MailClient
             dbConnection = new SQLiteConnection("Data Source =" + dbName + ";" + "Version = 3;");
 
             // Associate the connection string with an SQLiteCommand.
-            command = new SQLiteCommand(dbConnection);
+            dbCommand = new SQLiteCommand(dbConnection);
 
             // Check if the database-file exists.
             if (!File.Exists(dbName))
@@ -49,17 +45,17 @@ namespace MailClient
                 dbConnection.Open();
 
                 // Create a table called "mailaddresses" with nine columns.
-                command.CommandText =   "CREATE TABLE mailaddresses (address TEXT, password TEXT, receiveserver TEXT, receiveport INT, receivessl TEXT,"
+                dbCommand.CommandText =   "CREATE TABLE mailaddresses (address TEXT, password TEXT, receiveserver TEXT, receiveport INT, receivessl TEXT,"
                                       + "sendserver TEXT, sendport INT, sendssl TEXT, autologin TEXT);";
 
                 // Execute the newly created command.
-                command.ExecuteNonQuery();
+                dbCommand.ExecuteNonQuery();
 
                 // Create a table called "mails" with two columns called "address" and "rawmessage".
-                command.CommandText = "CREATE TABLE mails (address TEXT, rawmessage TEXT);";
+                dbCommand.CommandText = "CREATE TABLE mails (address TEXT, rawmessage TEXT);";
 
                 // Execute the newly created command.
-                command.ExecuteNonQuery();
+                dbCommand.ExecuteNonQuery();
 
                 // Give the database a simple password.
                 dbConnection.ChangePassword(dbPassword);
@@ -69,7 +65,7 @@ namespace MailClient
             }
 
             // Add the password to the connection string.
-            command.Connection.ConnectionString += "Password =" + dbPassword + ";";
+            dbCommand.Connection.ConnectionString += "Password =" + dbPassword + ";";
 
             // Close the database again.
             dbConnection.Close();
@@ -81,10 +77,10 @@ namespace MailClient
             dbConnection.Open();
 
             // Make sure that any record with autologin set to true is set to false.
-            command.CommandText = "UPDATE mailaddresses SET autologin='false' WHERE autologin='true';";
+            dbCommand.CommandText = "UPDATE mailaddresses SET autologin='false' WHERE autologin='true';";
 
             // Execute the newly created command.
-            command.ExecuteNonQuery();
+            dbCommand.ExecuteNonQuery();
 
             // Close the database again. 
             dbConnection.Close();
@@ -103,17 +99,17 @@ namespace MailClient
             dbConnection.Open();
 
             // Make sure that no other record has the specified usermail in the database.
-            command.CommandText = "DELETE FROM mailaddresses WHERE '" + userMail + "';";
+            dbCommand.CommandText = "DELETE FROM mailaddresses WHERE '" + userMail + "';";
 
             // Execute the newly created comand.
-            command.ExecuteNonQuery();
+            dbCommand.ExecuteNonQuery();
 
             // Insert a mailaddress and password into the table called "mailaddresses".
-            command.CommandText =   "INSERT INTO mailaddresses VALUES ('" + userMail + "', '" + password + "', 'NULL', 0, 'false', '"
+            dbCommand.CommandText =   "INSERT INTO mailaddresses VALUES ('" + userMail + "', '" + password + "', 'NULL', 0, 'false', '"
                                   + "NULL', 0, 'false', '" + autoLogin.ToString().ToLower() + "');";
 
             // Execute the newly created command.
-            command.ExecuteNonQuery();
+            dbCommand.ExecuteNonQuery();
 
             // Close the database again. 
             dbConnection.Close();
@@ -128,11 +124,11 @@ namespace MailClient
             dbConnection.Open();
 
             // Insert a mailaddress and password into the table called "mailaddresses".
-            command.CommandText =   "UPDATE mailaddresses SET autologin='" + autoLogin.ToString().ToLower() + "'"
+            dbCommand.CommandText =   "UPDATE mailaddresses SET autologin='" + autoLogin.ToString().ToLower() + "'"
                                   + "WHERE address='" + userMail + "' AND password='" + password + "';";
 
             // Execute the newly created command.
-            command.ExecuteNonQuery();
+            dbCommand.ExecuteNonQuery();
 
             // Close the database again. 
             dbConnection.Close();
@@ -147,22 +143,22 @@ namespace MailClient
             dbConnection.Open();
 
             // Retrieve all records from the table called "mailaddresses".
-            command.CommandText = "SELECT * FROM mailaddresses;";
+            dbCommand.CommandText = "SELECT * FROM mailaddresses;";
 
             // Execute the newly created command.
-            query = command.ExecuteReader();
+            dbQuery = dbCommand.ExecuteReader();
 
             // Read the retrieved query, and write the results to the newly created list.
-            while (query.Read())
+            while (dbQuery.Read())
                 listUserInfo.Add(new UserInfo
                 {
-                    userMail = query["address"].ToString(),
-                    password = query["password"].ToString(),
-                    autoLogin = query["autologin"].ToString()
+                    userMail = dbQuery["address"].ToString(),
+                    password = dbQuery["password"].ToString(),
+                    autoLogin = dbQuery["autologin"].ToString()
                 });
 
             // Close the query-reader again.
-            query.Close();
+            dbQuery.Close();
 
             // Close the database again. 
             dbConnection.Close();

@@ -1,13 +1,9 @@
 ﻿using OpenPop.Pop3;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MailClient
@@ -58,6 +54,9 @@ namespace MailClient
 
             // Make the provided progressbar the status progressbar.
             this.statusProgressBar = statusProgressBar;
+
+            // Instantiate the database.
+            mailDatabase = new MailDatabase();
 
             try
             {
@@ -178,9 +177,6 @@ namespace MailClient
                 int newMailCount = 0,
                     mailCount = client.GetMessageCount();
 
-                // Instantiate the database.
-                mailDatabase = new MailDatabase();
-
                 // Declare a variable that can hold a mailmessage.
                 OpenPop.Mime.Message mailMessage;
 
@@ -223,7 +219,7 @@ namespace MailClient
             }
         }
 
-        public void RetrieveAllMailsFromServer(ListBox listBoxMails, MailDatabase mailDatabase)
+        public void RetrieveAllMailsFromServer(ListBox listBoxMails)
         {
             try
             {

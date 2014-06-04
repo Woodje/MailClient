@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MailClient
@@ -62,7 +55,7 @@ namespace MailClient
             MailClientForm.SetProgramStatus(MailClientForm.ProgramStatus.SettingAccepted);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonConnect_Click(object sender, EventArgs e)
         {
             // Check if the other form is open, if it is not then close this one.
             if (Application.OpenForms["MailClientForm"] == null)
