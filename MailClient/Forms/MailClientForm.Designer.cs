@@ -123,7 +123,7 @@
             this.listBoxMails.ItemHeight = 18;
             this.listBoxMails.Location = new System.Drawing.Point(16, 100);
             this.listBoxMails.Name = "listBoxMails";
-            this.listBoxMails.Size = new System.Drawing.Size(398, 472);
+            this.listBoxMails.Size = new System.Drawing.Size(398, 490);
             this.listBoxMails.TabIndex = 10;
             this.listBoxMails.SelectedIndexChanged += new System.EventHandler(this.listBoxMails_SelectedIndexChanged);
             // 
